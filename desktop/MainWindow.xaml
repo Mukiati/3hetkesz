@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookCatalog"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Books" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <WrapPanel x:Name="toolBar"/>
+        <ScrollViewer Grid.Row="1">
+            <WrapPanel x:Name="booksPanel"/>
+        </ScrollViewer>
     </Grid>
 </Window>
