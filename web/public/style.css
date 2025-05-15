@@ -67,12 +67,6 @@ a:has(article) {
 #search * {
   display: inline-block;
 }
-/* @media (prefers-color-scheme: dark) {
-  body {
-    background: #232323;
-    color: white;
-  }
-} */
 @media (max-width: 140ch) {
   body {
     max-width: 90vw;

@@ -27,7 +27,6 @@ export const newBook = async (author, title, details) => {
  * @returns {Promise<string|Book>} error message or updated book details
  */
 export const editBook = async (id, author, title, details) => {
-  console.log(author, title, details);
   if (!(author && title && details)) return "You must fill out all fields!";
   const book = await Book.findByPk(id);
   if (book) {
