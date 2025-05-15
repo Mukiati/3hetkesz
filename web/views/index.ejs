@@ -1,0 +1,16 @@
+<%- include("head") -%>
+<form id="search">
+  <label>
+    Search
+    <input name="search" value="<%= search %>">
+  </label>
+  <button>Search</button>
+</form>
+<% for (book of books) { %>
+<a href="/book/<%= book.id %>">
+  <article>
+    <p><%= book.author %></p>
+    <h3><%= book.title %></h3>
+  </article>
+</a>
+<% } %> <%- include("foot") -%>

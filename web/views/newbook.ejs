@@ -1,0 +1,23 @@
+<%- include("head") -%>
+<h2>New book</h2>
+<% if (typeof msg != "undefined") { %>
+<p id="msg"><%= msg %></p>
+<% } %>
+<form method="post">
+  <label>
+    Author
+    <input name="author" value="<%= author %>">
+  </label>
+  <label>
+    Title
+    <input name="title" value="<%= title %>">
+  </label>
+  <label>
+    Details
+    <textarea name="details" cols="50" rows="20">
+      <%= details -%>
+    </textarea>
+  </label>
+  <button>Add new book</button>
+</form>
+<%- include("foot") -%>

@@ -1,0 +1,9 @@
+<%- include("head") -%>
+<article class="wholeBook">
+  <p><%= book.author %></p>
+  <h2><%= book.title %></h2>
+  <p><%= book.details %></p>
+  <a href="/deletebook/<%= book.id %>"><button type="button">Delete</button></a>
+  <a href="/editbook/<%= book.id %>"><button type="button">Edit</button></a>
+</article>
+<%- include("foot") -%>

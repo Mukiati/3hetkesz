@@ -1,0 +1,21 @@
+<header>
+  <h1><a href="/"><%= siteName %></a></h1>
+  <nav>
+    <ul>
+      <% if (user) { %>
+      <li>
+        <a href="/newbook">Add new book</a>
+      </li>
+      <li>
+        Logged in as
+        <a href="/me"><%= user.name %></a>
+      </li>
+      <li>
+        <a href="/logout">Log out</a>
+      </li>
+      <% } else { %>
+      <li><a href="/login">Log in or register</a></li>
+      <% } %>
+    </ul>
+  </nav>
+</header>
