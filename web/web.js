@@ -39,7 +39,7 @@ function LoggedOutOnly(req, res, next) {
 }
 
 app.get("/", async (req, res) => {
-  const search = req.query.search || "";
+  const search = req.query.search;
   res.render("index", {
     books: await searchBooks(search),
     search: search,

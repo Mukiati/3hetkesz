@@ -42,6 +42,7 @@ export const editBook = async (id, author, title, details) => {
  * @returns {Promise<Book[]>} list of books whose title contains `search`
  */
 export const searchBooks = (search) => {
+  if (typeof search == "undefined") search = "";
   return Book.findAll({
     order: [["updatedAt", "DESC"]],
     where: { title: { [Op.like]: "%" + search + "%" } },
