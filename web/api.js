@@ -9,9 +9,11 @@ app.use(express.json());
 
 app.use(async (req, res, next) => {
   try {
-    if (req.body.token) {
+    if (req.query.token) {
+      res.locals.user = await ValidateToken(req.query.token);
+    } else if (req.body.token) {
       res.locals.user = await ValidateToken(req.body.token);
-    } else throw new Error("");
+    } else throw new Error();
   } catch {
     res.locals.user = null;
   }

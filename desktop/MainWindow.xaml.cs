@@ -28,10 +28,11 @@ namespace BookCatalog
         }
         async void UpdateBooks()
         {
+            List<Book> books = await API.GetBooks();
             booksPanel.Children.Clear();
-            foreach (Book book in await API.GetBooks())
+            foreach (Book book in books)
             {
-                booksPanel.Children.Add(new BookControl(book));
+                booksPanel.Children.Add(new BookControl(book, UpdateBooks));
             }
         }
         Button NewToolbarButton(string text, RoutedEventHandler clickHandler)
@@ -44,7 +45,7 @@ namespace BookCatalog
         void LoginButton_Click(object s, RoutedEventArgs e)
         {
             new LoginWindow().ShowDialog();
-            if (API.Token == null) LoggedOut();
+            if (!API.LoggedIn) LoggedOut();
             else LoggedIn();
         }
         void LogoutButton_Click(object s, RoutedEventArgs e)
@@ -61,6 +62,29 @@ namespace BookCatalog
         {
             toolBar.Children.Clear();
             NewToolbarButton("Log out", LogoutButton_Click);
+            NewToolbarButton("User info", UserInfoButton_Click);
+            NewToolbarButton("Add new book", AddButton_Click);
+        }
+        async void UserInfoButton_Click(object s, RoutedEventArgs e)
+        {
+            UserInfo user = await API.GetUserInfo();
+            MessageBox.Show($"Name: {user.Name}\nAccount created at {user.CreatedAt}", "User info");
+        }
+        async void AddButton_Click(object s, RoutedEventArgs e)
+        {
+            BookEditorWindow editor = new BookEditorWindow();
+            try
+            {
+                if ((bool)editor.ShowDialog())
+                {
+                    await API.SendBook(editor.Book, false);
+                    UpdateBooks();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

@@ -22,5 +22,12 @@ namespace BookCatalog
         public DateTime CreatedAt { get; set; }
         [JsonProperty("updatedAt")]
         public DateTime UpdatedAt { get; set; }
+        public Book() { }
+        public Book(string author, string title, string details)
+        {
+            Author = author;
+            Title = title;
+            Details = details;
+        }
     }
 }

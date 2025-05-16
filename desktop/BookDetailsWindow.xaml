@@ -1,0 +1,18 @@
+﻿<Window x:Class="BookCatalog.BookDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BookCatalog"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="450" Width="800">
+    <StackPanel>
+        <Label Content="{Binding Author}"/>
+        <Label Content="{Binding Title}" FontWeight="Bold"/>
+        <TextBlock Text="{Binding Details}"/>
+        <StackPanel Orientation="Horizontal" x:Name="actionsPanel" Visibility="Hidden">
+            <Button x:Name="editButton" Click="editButton_Click">Edit</Button>
+            <Button x:Name="deleteButton" Click="deleteButton_Click">Delete</Button>
+        </StackPanel>
+    </StackPanel>
+</Window>

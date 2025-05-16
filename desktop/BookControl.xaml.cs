@@ -20,10 +20,17 @@ namespace BookCatalog
     /// </summary>
     public partial class BookControl : UserControl
     {
-        public BookControl(Book book)
+        Action UpdateBooks;
+        public BookControl(Book book, Action updateBooks)
         {
             InitializeComponent();
             DataContext = book;
+            UpdateBooks = updateBooks;
+        }
+
+        private void Border_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if ((bool)new BookDetailsWindow(DataContext as Book).ShowDialog()) UpdateBooks();
         }
     }
 }

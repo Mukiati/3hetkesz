@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BookCatalog"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Border BorderThickness="2" Margin="10" BorderBrush="Black" MinWidth="200" Cursor="Hand">
+    <Border BorderThickness="2" Margin="10" BorderBrush="Black" MinWidth="200" Cursor="Hand" MouseUp="Border_MouseUp">
         <StackPanel>
             <Label Content="{Binding Author}"/>
             <Label Content="{Binding Title}" FontWeight="Bold"/>
