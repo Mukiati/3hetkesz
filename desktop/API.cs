@@ -16,6 +16,7 @@ namespace BookCatalog
         static readonly HttpClient http = new HttpClient();
         static string Token { get; set; } = null;
         public static bool LoggedIn => Token != null;
+        public static UserInfo CurrentUser { get; private set; }
         static async Task<bool> LoginOrRegister(string action, string name, string password)
         {
             string body = null;
@@ -28,6 +29,9 @@ namespace BookCatalog
                 response.EnsureSuccessStatusCode();
                 TokenBody loginResponse = JsonConvert.DeserializeObject<TokenBody>(body);
                 Token = loginResponse.Token;
+
+                CurrentUser = await GetUserInfo();
+
                 return true;
             }
             catch
@@ -38,7 +42,11 @@ namespace BookCatalog
         }
         public static async Task<bool> Login(string name, string password) => await LoginOrRegister("login", name, password);
         public static async Task<bool> Register(string name, string password) => await LoginOrRegister("register", name, password);
-        public static void LogOut() => Token = null;
+        public static void LogOut()
+        {
+            Token = null;
+            CurrentUser = default; 
+        }
         public static async Task<UserInfo> GetUserInfo()
         {
             HttpResponseMessage response = await http.GetAsync(URL + $"me?token={Token}");
@@ -79,31 +87,67 @@ namespace BookCatalog
                 throw new Exception(msgResponse.Message);
             }
         }
-    }
-    public struct LoginBody
-    {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-        [JsonProperty("password")]
-        public string Password { get; set; }
-        public LoginBody(string name, string password)
+
+        public static async Task<List<Review>> GetReviewsForBook(int bookId)
         {
-            Name = name;
-            Password = password;
+            HttpResponseMessage response = await http.GetAsync(URL + $"books/{bookId}/reviews");
+            response.EnsureSuccessStatusCode();
+            string body = await response.Content.ReadAsStringAsync();
+            List<Review> reviews = JsonConvert.DeserializeObject<List<Review>>(body);
+            return reviews;
         }
-    }
-    public struct TokenBody
-    {
-        [JsonProperty("token")]
-        public string Token { get; set; }
-    }
-    public struct MsgResponse
-    {
-        [JsonProperty("msg")]
-        public string Message { get; set; }
+
+        public static async Task SendReview(Review review)
+        {
+            string body = null;
+            try
+            {
+                string json = JsonConvert.SerializeObject(review);
+                HttpContent reqBody = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await http.PostAsync(URL + $"reviews?token={Token}", reqBody);
+                body = await response.Content.ReadAsStringAsync();
+                response.EnsureSuccessStatusCode();
+            }
+            catch
+            {
+                MsgResponse msgResponse = JsonConvert.DeserializeObject<MsgResponse>(body);
+                throw new Exception(msgResponse.Message ?? "An unknown error occurred.");
+            }
+        }
+
+        public static async Task DeleteReview(int reviewId)
+        {
+            HttpResponseMessage response = await http.DeleteAsync(URL + $"reviews/{reviewId}?token={Token}");
+            response.EnsureSuccessStatusCode();
+        }
+        public struct LoginBody
+        {
+            [JsonProperty("name")]
+            public string Name { get; set; }
+            [JsonProperty("password")]
+            public string Password { get; set; }
+            public LoginBody(string name, string password)
+            {
+                Name = name;
+                Password = password;
+            }
+        }
+        public struct TokenBody
+        {
+            [JsonProperty("token")]
+            public string Token { get; set; }
+        }
+        public struct MsgResponse
+        {
+            [JsonProperty("msg")]
+            public string Message { get; set; }
+        }
+
     }
     public struct UserInfo
     {
+        [JsonProperty("id")]
+        public int Id { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
         [JsonProperty("createdAt")]

@@ -42,13 +42,19 @@ namespace BookCatalog
             toolBar.Children.Add(button);
             return button;
         }
-        void LoginButton_Click(object s, RoutedEventArgs e)
+        async void LoginButton_Click(object s, EventArgs e)
         {
             new LoginWindow().ShowDialog();
-            if (!API.LoggedIn) LoggedOut();
-            else LoggedIn();
+            if (!API.LoggedIn)
+            {
+                LoggedOut();
+            }
+            else
+            {
+                LoggedIn();
+            }
         }
-        void LogoutButton_Click(object s, RoutedEventArgs e)
+        void LogoutButton_Click(object s, EventArgs e)
         {
             API.LogOut();
             LoggedOut();
@@ -65,12 +71,12 @@ namespace BookCatalog
             NewToolbarButton("User info", UserInfoButton_Click);
             NewToolbarButton("Add new book", AddButton_Click);
         }
-        async void UserInfoButton_Click(object s, RoutedEventArgs e)
+        async void UserInfoButton_Click(object s, EventArgs e)
         {
             UserInfo user = await API.GetUserInfo();
             MessageBox.Show($"Name: {user.Name}\nAccount created at {user.CreatedAt}", "User info");
         }
-        async void AddButton_Click(object s, RoutedEventArgs e)
+        async void AddButton_Click(object s, EventArgs e)
         {
             BookEditorWindow editor = new BookEditorWindow();
             try

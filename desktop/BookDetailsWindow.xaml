@@ -5,14 +5,34 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BookCatalog"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="450" Width="800">
-    <StackPanel>
-        <Label Content="{Binding Author}"/>
-        <Label Content="{Binding Title}" FontWeight="Bold"/>
-        <TextBlock Text="{Binding Details}"/>
-        <StackPanel Orientation="Horizontal" x:Name="actionsPanel" Visibility="Hidden">
-            <Button x:Name="editButton" Click="editButton_Click">Edit</Button>
-            <Button x:Name="deleteButton" Click="deleteButton_Click">Delete</Button>
+        Title="Book Details" Height="600" Width="500" Loaded="Window_Loaded">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Könyv adatai -->
+        <StackPanel>
+            <TextBlock Text="{Binding Author}" FontSize="16" FontWeight="Bold" Foreground="Gray"/>
+            <TextBlock Text="{Binding Title}" FontSize="24" FontWeight="Bold" Margin="0,0,0,10" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding Details}" TextWrapping="Wrap" FontStyle="Italic"/>
         </StackPanel>
-    </StackPanel>
+
+        <!-- Vélemények szekció -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,20">
+            <StackPanel>
+                <TextBlock Text="Reviews" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,5" />
+                <ItemsControl x:Name="reviewsPanel"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Gombok -->
+        <StackPanel x:Name="actionsPanel" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="Collapsed">
+            <Button x:Name="addReviewButton" Content="Add Review" Margin="5" Click="addReviewButton_Click"/>
+            <Button x:Name="editButton" Content="Edit Book" Margin="5" Click="editButton_Click"/>
+            <Button x:Name="deleteButton" Content="Delete Book" Background="IndianRed" Foreground="White" Margin="5" Click="deleteButton_Click"/>
+        </StackPanel>
+    </Grid>
 </Window>

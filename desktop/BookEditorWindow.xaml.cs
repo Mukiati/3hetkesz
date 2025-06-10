@@ -35,13 +35,13 @@ namespace BookCatalog
             saveButton.Content = "Save";
             Title = "Edit book";
         }
-        private void saveButton_Click(object sender, RoutedEventArgs e)
+        private void saveButton_Click(object sender, EventArgs e)
         {
             Book.Author = authorField.Text;
             Book.Title = titleField.Text;
             Book.Details = detailsField.Text;
             DialogResult = true;
         }
-        private void cancelButton_Click(object sender, RoutedEventArgs e) => DialogResult = false;
+        private void cancelButton_Click(object sender, EventArgs e) => DialogResult = false;
     }
 }

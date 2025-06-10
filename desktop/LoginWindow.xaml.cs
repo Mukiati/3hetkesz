@@ -23,7 +23,7 @@ namespace BookCatalog
         {
             InitializeComponent();
         }
-        private async void registerButton_Click(object sender, RoutedEventArgs e)
+        private async void registerButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace BookCatalog
                 MessageBox.Show(ex.Message);
             }
         }
-        private async void loginButton_Click(object sender, RoutedEventArgs e)
+        private async void loginButton_Click(object sender, EventArgs e)
         {
             try
             {

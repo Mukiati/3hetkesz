@@ -14,25 +14,74 @@ using System.Windows.Shapes;
 
 namespace BookCatalog
 {
-    /// <summary>
-    /// Interaction logic for BookDetailsWindow.xaml
-    /// </summary>
     public partial class BookDetailsWindow : Window
     {
+        private Book _currentBook;
+
         public BookDetailsWindow(Book book)
         {
             InitializeComponent();
-            DataContext = book;
-            if (API.LoggedIn) actionsPanel.Visibility = Visibility.Visible;
+            _currentBook = book;
+            DataContext = _currentBook;
         }
 
-        private async void editButton_Click(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, EventArgs e)
         {
-            BookEditorWindow editor = new BookEditorWindow(DataContext as Book);
+           
+            await LoadReviewsAndSetButtonVisibility();
+        }
+
+        private async Task LoadReviewsAndSetButtonVisibility()
+        {
+          
+            reviewsPanel.Items.Clear();
             try
             {
-                if ((bool)editor.ShowDialog()) await API.SendBook(editor.Book, true);
-                DialogResult = true;
+                List<Review> reviews = await API.GetReviewsForBook(_currentBook.Id);
+                foreach (var review in reviews)
+                {
+                  
+                    reviewsPanel.Items.Add(new ReviewControl(review, async () => await LoadReviewsAndSetButtonVisibility()));
+                }
+
+               
+                if (API.LoggedIn)
+                {
+                    actionsPanel.Visibility = Visibility.Visible;
+
+                    
+                    bool userHasReviewed = reviews.Any(r => r.User.Id == API.CurrentUser.Id);
+                    if (userHasReviewed)
+                    {
+                        addReviewButton.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        addReviewButton.Visibility = Visibility.Visible;
+                    }
+                }
+                else
+                {
+                    actionsPanel.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Could not load reviews: {ex.Message}");
+            }
+        }
+
+
+        private async void editButton_Click(object sender, EventArgs e)
+        {
+            BookEditorWindow editor = new BookEditorWindow(_currentBook);
+            try
+            {
+                if (editor.ShowDialog() == true)
+                {
+                    await API.SendBook(editor.Book, true);
+                    DialogResult = true;
+                }
             }
             catch (Exception ex)
             {
@@ -40,10 +89,40 @@ namespace BookCatalog
             }
         }
 
-        private async void deleteButton_Click(object sender, RoutedEventArgs e)
+        private async void deleteButton_Click(object sender, EventArgs e)
         {
-            await API.DeleteBook((DataContext as Book).Id);
-            DialogResult = true;
+            if (deleteButton.Content == "delete")
+            {
+                MessageBox.Show("Are you sure you want to delete this book?");
+                try
+                {
+                    await API.DeleteBook(_currentBook.Id);
+                    DialogResult = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to delete book: {ex.Message}", "Error");
+                }
+            }
+        }
+
+        private async void addReviewButton_Click(object sender, EventArgs e)
+        {
+            var editor = new ReviewEditorWindow();
+            if (editor.ShowDialog() == true)
+            {
+                try { 
+                
+                    var newReview = editor.Review;
+                    newReview.BookId = _currentBook.Id;
+                    await API.SendReview(newReview);
+                    await LoadReviewsAndSetButtonVisibility();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error submitting review: {ex.Message}", "Error");
+                }
+            }
         }
     }
 }
