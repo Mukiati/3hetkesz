@@ -1,0 +1,14 @@
+<%- include("head", { pageName: typeof pageName !== 'undefined' ? pageName : "Edit Category" }) -%>
+<h2>Edit Category: <%= category.name %></h2>
+<% if (typeof msg != "undefined" && msg) { %>
+<p class="msg error-msg"><%= msg %></p>
+<% } %>
+<form method="post">
+  <label>
+    Category Name
+    <input name="name" value="<%= category.name %>" required>
+  </label>
+  <button type="submit">Save Changes</button>
+  <a href="/categories"><button type="button">Cancel</button></a>
+</form>
+<%- include("foot") -%>

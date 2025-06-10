@@ -1,0 +1,38 @@
+<%- include("head", { pageName: typeof pageName !== 'undefined' ? pageName : `Edit Book: ${title}` }) -%>
+<h2>Edit Book: <%= title %> <small>(ID: <%= id %>)</small></h2>
+<% if (typeof msg != "undefined" && msg) { %>
+<p id="msg" class="msg error-msg"><%= msg %></p>
+<% } %>
+<form method="post">
+  <label>
+    Author
+    <input name="author" value="<%= author %>" required>
+  </label>
+  <label>
+    Title
+    <input name="title" value="<%= title %>" required>
+  </label>
+  <label>
+    Details
+    <textarea name="details" cols="50" rows="10" required><%= details %></textarea>
+  </label>
+  <fieldset class="categories-fieldset">
+    <legend>Categories</legend>
+    <% if (locals.allCategories && allCategories.length > 0) { %>
+      <% for (const category of allCategories) { %>
+        <label class="checkbox-label">
+          <input type="checkbox" name="categoryIds" value="<%= category.id %>"
+            <%= locals.bookCategories && bookCategories.includes(category.id) ? 'checked' : '' %>>
+          <%= category.name %>
+        </label>
+      <% } %>
+    <% } else { %>
+      <p>No categories available.</p>
+    <% } %>
+  </fieldset>
+  <div class="form-actions">
+    <button type="submit">Save Changes</button>
+    <a href="/book/<%= id %>"><button type="button" class="cancel">Cancel</button></a>
+  </div>
+</form>
+<%- include("foot") -%>

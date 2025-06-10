@@ -1,0 +1,18 @@
+<%- include("head") -%>
+<h2>Log in or register</h2>
+<% if (typeof msg != "undefined") { %>
+<p id="msg"><%= msg %></p>
+<% } %>
+<form method="post">
+  <label>
+    Username
+    <input name="name">
+  </label>
+  <label>
+    Password
+    <input name="password" type="password">
+  </label>
+  <button formaction="/login">Log in</button>
+  <button formaction="/register">Register</button>
+</form>
+<%- include("foot") -%>

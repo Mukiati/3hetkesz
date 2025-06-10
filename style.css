@@ -1,0 +1,74 @@
+body {
+  font-family: sans-serif;
+  max-width: 132ch;
+  margin: auto;
+}
+h1 a {
+  text-decoration: none;
+}
+h1,
+h2 {
+  text-align: center;
+}
+nav {
+  text-align: right;
+}
+nav li {
+  display: inline-block;
+  margin-inline: 1em;
+}
+a {
+  color: currentColor;
+}
+form {
+  width: max-content;
+  margin: auto;
+}
+input,
+textarea {
+  display: block;
+  margin: 1em;
+}
+button {
+  cursor: pointer;
+}
+#msg {
+  border: 2px solid red;
+  max-width: max-content;
+  margin: 20px auto;
+  padding: 5px;
+}
+article {
+  border: 2px solid;
+  padding: 20px;
+  min-width: 200px;
+  width: max-content;
+  max-width: 70vw;
+  display: inline-block;
+  margin: 10px;
+}
+article > * {
+  margin: 0;
+}
+article > a {
+  margin-top: 20px;
+  display: inline-block;
+}
+a:has(article) {
+  text-decoration: none;
+}
+.wholeBook {
+  display: block;
+  margin: auto;
+}
+.wholeBook :first-child {
+  text-align: center;
+}
+#search * {
+  display: inline-block;
+}
+@media (max-width: 140ch) {
+  body {
+    max-width: 90vw;
+  }
+}

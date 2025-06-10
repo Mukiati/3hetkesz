@@ -1,0 +1,25 @@
+<%- include("head", { pageName: typeof pageName !== 'undefined' ? pageName : "Category Statistics" }) -%>
+<h2>Category Statistics</h2>
+<% if (typeof msg != "undefined" && msg) { %><p class="msg info-msg"><%= msg %></p><% } %>
+<% if (locals.stats && stats.length > 0) { %>
+  <table>
+    <thead>
+      <tr>
+        <th>Category Name</th>
+        <th>Number of Books</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (const stat of stats) { %>
+      <tr>
+        <td><a href="/books/category/<%= stat.id %>"><%= stat.name %></a></td>
+        <td><%= stat.bookCount %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+<% } else { %>
+  <p>No category statistics available or no books have been categorized yet.</p>
+<% } %>
+<p><a href="/categories">Back to Categories</a></p>
+<%- include("foot") -%>

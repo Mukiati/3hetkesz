@@ -1,0 +1,30 @@
+<%- include("head", { pageName: typeof pageName !== 'undefined' ? pageName : 'Home' }) -%>
+
+<% if (typeof msg != "undefined" && msg) { %><p class="msg info-msg"><%= msg %></p><% } %>
+
+<form id="search-form" method="get" action="/">
+  <label for="search-input">Search by Title:</label>
+  <input id="search-input" name="search" value="<%= typeof search !== 'undefined' ? search : '' %>" placeholder="Enter book title...">
+  <button type="submit">Search</button>
+</form>
+
+<div class="book-list">
+<% if (locals.books && books.length > 0) { %>
+  <% for (const book of books) { %>
+  <a href="/book/<%= book.id %>" class="book-link-item">
+    <article class="book-summary-item">
+      <p class="book-author"><%= book.author %></p>
+      <h3><%= book.title %></h3>
+      <% if (book.categories && book.categories.length > 0) { %>
+        <p class="categories-preview">
+          Categories: <%= book.categories.map(c => c.name).join(', ') %>
+        </p>
+      <% } %>
+    </article>
+  </a>
+  <% } %>
+<% } else { %>
+  <p>No books found matching your criteria.</p>
+<% } %>
+</div>
+<%- include("foot") -%>

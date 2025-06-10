@@ -1,0 +1,13 @@
+<%- include("head", { pageName: typeof pageName !== 'undefined' ? pageName : "New Category" }) -%>
+<h2>Create New Category</h2>
+<% if (typeof msg != "undefined" && msg) { %>
+<p class="msg error-msg"><%= msg %></p>
+<% } %>
+<form method="post">
+  <label>
+    Category Name
+    <input name="name" value="<%= typeof name !== 'undefined' ? name : '' %>" required>
+  </label>
+  <button type="submit">Create Category</button>
+</form>
+<%- include("foot") -%>
